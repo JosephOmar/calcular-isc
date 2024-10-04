@@ -438,7 +438,7 @@ export default function Home() {
                 <input
                   type="number"
                   value={igv}
-                  readOnly
+                  onChange={(e) => setIgv(Number(e.target.value))}
                   className="border p-2 rounded w-full"
                   placeholder="IGV calculado"
                 />
