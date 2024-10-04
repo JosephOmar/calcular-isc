@@ -25,3 +25,7 @@ body {
     text-wrap: balance;
   }
 }
+
+.bgMain{
+  background-image: linear-gradient(to right top, #6bd193, #30cfb3, #00cacf, #00c2e3, #44b8ed, #52baf1, #5ebdf5, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+}
