@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [isc, setIsc] = useState<number>(0)
+  const [isc, setIsc] = useState<number>(0);
 
   const [product, setProduct] = useState<string>("");
 
@@ -22,14 +22,14 @@ export default function Home() {
   const [finalPrice, setFinalPrice] = useState<number>(0);
 
   useEffect(() => {
-    let totalPrice = productPrice
-    console.log(totalPrice)
-    totalPrice = (totalPrice*((100+isc)/100))
-    console.log(totalPrice)
-    totalPrice = totalPrice * ((100+igv)/100)
+    let totalPrice = productPrice;
+    console.log(totalPrice);
+    totalPrice = totalPrice * ((100 + isc) / 100);
+    console.log(totalPrice);
+    totalPrice = totalPrice * ((100 + igv) / 100);
     totalPrice = Number(totalPrice.toFixed(2));
-    setFinalPrice(totalPrice)
-  },[productPrice, isc,igv])
+    setFinalPrice(totalPrice);
+  }, [productPrice, isc, igv]);
 
   useEffect(() => {
     let newIsc = 0;
@@ -38,23 +38,29 @@ export default function Home() {
 
     // Tasa del 0%
     if (
-      condition === "usado" && 
-      (specialUsers === "misiones_diplomaticas" || specialUsers === "organismos_internacionales")
+      condition === "usado" &&
+      (specialUsers === "misiones_diplomaticas" ||
+        specialUsers === "organismos_internacionales")
     ) {
       newIsc = 0;
     } else if (
-      condition === "nuevo" && usage === "transporte_personas" && specialUsers === "misiones_diplomaticas"
+      condition === "nuevo" &&
+      usage === "transporte_personas" &&
+      specialUsers === "misiones_diplomaticas"
     ) {
       newIsc = 0;
     } else if (
-      vehicleType === "camioneta" && specialUsers === "misiones_diplomaticas"
+      vehicleType === "camioneta" &&
+      specialUsers === "misiones_diplomaticas"
     ) {
       newIsc = 0;
     }
 
     // Tasa del 5%
     else if (
-      condition === "nuevo" && fuelType === "gasolina" && cylinderCapacity === "1400_inferior"
+      condition === "nuevo" &&
+      fuelType === "gasolina" &&
+      cylinderCapacity === "1400_inferior"
     ) {
       newIsc = 5;
     } else if (vehicleType === "motocicleta" && fuelType === "gasolina") {
@@ -63,14 +69,18 @@ export default function Home() {
 
     // Tasa del 7.5%
     else if (
-      condition === "nuevo" && fuelType === "gasolina" && cylinderCapacity === "1400_1500"
+      condition === "nuevo" &&
+      fuelType === "gasolina" &&
+      cylinderCapacity === "1400_1500"
     ) {
       newIsc = 7.5;
     }
 
     // Tasa del 10%
     else if (
-      condition === "nuevo" && fuelType === "gasolina" && cylinderCapacity === "1500_superior"
+      condition === "nuevo" &&
+      fuelType === "gasolina" &&
+      cylinderCapacity === "1500_superior"
     ) {
       newIsc = 10;
     } else if (vehicleType === "motocicleta" && fuelType === "gasolina") {
@@ -79,21 +89,25 @@ export default function Home() {
 
     // Tasa del 12%
     else if (
-      condition === "nuevo" && fuelType === "diesel" && usage === "transporte_personas"
+      condition === "nuevo" &&
+      fuelType === "diesel" &&
+      usage === "transporte_personas"
     ) {
       newIsc = 12;
     }
 
     // Tasa del 17%
-    else if (
-      condition === "usado" && usage === "transporte_personas"
-    ) {
+    else if (condition === "usado" && usage === "transporte_personas") {
       newIsc = 17;
     }
 
     // Tasa del 25%
     else if (
-      condition === "usado" && (fuelType === "gasolina" || fuelType === "diesel" || fuelType === "hibrido" || fuelType === "electrico")
+      condition === "usado" &&
+      (fuelType === "gasolina" ||
+        fuelType === "diesel" ||
+        fuelType === "hibrido" ||
+        fuelType === "electrico")
     ) {
       newIsc = 25;
     } else if (vehicleType === "camioneta" && condition === "usado") {
@@ -101,9 +115,7 @@ export default function Home() {
     }
 
     // Tasa del 40%
-    else if (
-      vehicleType === "tractor"
-    ) {
+    else if (vehicleType === "tractor") {
       newIsc = 40;
     } else if (condition === "usado" && usage === "transporte_mercancias") {
       newIsc = 40;
@@ -111,7 +123,6 @@ export default function Home() {
 
     // Establecer el ISC calculado
     setIsc(newIsc);
-
   }, [fuelType, condition, cylinderCapacity, vehicleType, usage, specialUsers]);
 
   useEffect(() => {
@@ -120,17 +131,17 @@ export default function Home() {
     // Evaluar reglas para el ISC basado en las selecciones
 
     // Tasa del 0% por exclusiones (bebidas con registro sanitario especial o propiedades para la salud)
-    if (exclusions === "registro_sanitario" || exclusions === "propiedades_salud") {
+    if (
+      exclusions === "registro_sanitario" ||
+      exclusions === "propiedades_salud"
+    ) {
       newIsc = 0; // Tasa del 0% por exclusiones
-
     } else if (sugarAmount === "0.5_inferior") {
       // Tasa del 12% para bebidas con azúcar inferior a 0,5 g/100 ml
-      newIsc = 12; 
-      
+      newIsc = 12;
     } else if (sugarAmount === "0.5_5") {
       // Tasa del 17% para bebidas con azúcar entre 0,5 g/100 ml y 5 g/100 ml
-      newIsc = 17; 
-      
+      newIsc = 17;
     } else if (sugarAmount === "5_superior") {
       // Tasa del 25% para bebidas con azúcar igual o superior a 5 g/100 ml
       newIsc = 25;
@@ -138,18 +149,17 @@ export default function Home() {
 
     // Establecer el ISC calculado
     setIsc(newIsc);
-
   }, [sugarAmount, beverageType, exclusions]);
 
   const handleTabacos = () => {
     setProduct("Tabacos");
-    setIsc(50)
-  }
+    setIsc(50);
+  };
 
   const handleGames = () => {
     setProduct("Juegos de Azar");
-    setIsc(10)
-  }
+    setIsc(10);
+  };
 
   return (
     <div className="max-w-[1100px] mx-auto flex flex-col items-center justify-center gap-5">
@@ -169,22 +179,18 @@ export default function Home() {
           >
             Bebidas
           </div>
-          <div
-            className="hover:bg-yellow-200"
-            onClick={() => handleTabacos()}
-          >
+          <div className="hover:bg-yellow-200" onClick={() => handleTabacos()}>
             Tabacos
           </div>
-          <div
-            className="hover:bg-yellow-200"
-            onClick={() => handleGames()}
-          >
+          <div className="hover:bg-yellow-200" onClick={() => handleGames()}>
             Juegos de Azar
           </div>
         </div>
       </div>
       <div>
-        <div>Producto seleccionado: <span className="font-bold">{product}</span></div>
+        <div>
+          Producto seleccionado: <span className="font-bold">{product}</span>
+        </div>
       </div>
       <div>
         {product === "" ? (
@@ -283,14 +289,24 @@ export default function Home() {
               </select>
             </div>
             {/* Usuarios Especiales */}
-      <div>
-        <label>Usuarios Especiales:</label>
-        <select value={specialUsers} onChange={(e) => setSpecialUsers(e.target.value)} className="border p-2 rounded">
-          <option value="">Seleccione si aplica a usuarios especiales</option>
-          <option value="misiones_diplomaticas">Misiones diplomáticas</option>
-          <option value="organismos_internacionales">Organismos internacionales</option>
-        </select>
-      </div>
+            <div>
+              <label>Usuarios Especiales:</label>
+              <select
+                value={specialUsers}
+                onChange={(e) => setSpecialUsers(e.target.value)}
+                className="border p-2 rounded"
+              >
+                <option value="">
+                  Seleccione si aplica a usuarios especiales
+                </option>
+                <option value="misiones_diplomaticas">
+                  Misiones diplomáticas
+                </option>
+                <option value="organismos_internacionales">
+                  Organismos internacionales
+                </option>
+              </select>
+            </div>
             <div className="mt-5 p-4 border rounded bg-gray-100">
               <h2 className="text-center">Datos Seleccionados</h2>
               <p>
@@ -312,7 +328,10 @@ export default function Home() {
               <p>
                 <strong>Uso:</strong> {usage || "No seleccionado"}
               </p>
-              <p><strong>Usuarios Especiales:</strong> {specialUsers || "No seleccionado"}</p>
+              <p>
+                <strong>Usuarios Especiales:</strong>{" "}
+                {specialUsers || "No seleccionado"}
+              </p>
             </div>
             <div>Impuesto Selectivo Al Consumo: {isc}%</div>
           </div>
@@ -393,46 +412,53 @@ export default function Home() {
           <div>Impuesto Selectivo Al consumo: 50%</div>
         ) : product === "Juegos de Azar" ? (
           <div>Impuesto Selectivo Al consumo: 10%</div>
-        ) : (<div></div>)
-      }
+        ) : (
+          <div></div>
+        )}
       </div>
       <div>
-      <div className="mt-5 p-4 border rounded bg-gray-100">
-        <h2 className="text-center">Calcular Precio Final</h2>
-        <div className="flex flex-col gap-4">
-          <div>
-            <label>Precio del Producto sin IGV:</label>
-            <input
-              type="number"
-              onChange={(e) => setProductPrice(Number(e.target.value))}
-              className="border p-2 rounded w-full"
-              placeholder="Ingrese el precio"
-            />
-          </div>
-          <div>
-            <label>IGV (18%):</label>
-            <input
-              type="number"
-              value={igv}
-              onChange={(e) => setIgv(Number(e.target.value))}
-              readOnly
-              className="border p-2 rounded w-full"
-              placeholder="IGV calculado"
-            />
-          </div>
-          <div>
-            <label>Precio Final:</label>
-            <input
-              type="number"
-              value={finalPrice}
-              readOnly
-              className="border p-2 rounded w-full"
-              placeholder="Precio final calculado"
-            />
+        <div className="mt-5 p-4 border rounded bg-gray-100">
+          <h2 className="text-center">Calcular Precio Final</h2>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center">
+                <label className="mr-2">Precio del Producto sin IGV:</label>
+                <span className="text-lg font-bold">S/</span>
+                <input
+                  type="number"
+                  onChange={(e) => setProductPrice(Number(e.target.value))}
+                  className="border p-2 rounded w-full"
+                  placeholder="Ingrese el precio"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center">
+                <label className="mr-2">IGV (18%):</label>
+                <input
+                  type="number"
+                  value={igv}
+                  readOnly
+                  className="border p-2 rounded w-full"
+                  placeholder="IGV calculado"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center">
+                <label className="mr-2">Precio Final:</label>
+                <span className="text-lg font-bold">S/</span>
+                <input
+                  type="number"
+                  value={finalPrice}
+                  readOnly
+                  className="border p-2 rounded w-full"
+                  placeholder="Precio final calculado"
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
       </div>
     </div>
   );
